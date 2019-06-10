@@ -1,0 +1,48 @@
+﻿@model SpearAutomation.Models.TCPT.Resource
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>Resource</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ResourceId" />
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input asp-for="Available" /> @Html.DisplayNameFor(model => model.Available)
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Location)
+                @Html.DropDownListFor(m => m.Location,
+                                          new SelectList(Enum.GetValues(typeof(SpearAutomation.Models.Enums.Location))),
+                                            "Select Location")
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Type)
+                @Html.DropDownListFor(m => m.Type,
+                                          new SelectList(Enum.GetValues(typeof(SpearAutomation.Models.Enums.ResourceType))),
+                                            "Select Resource Type")
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
