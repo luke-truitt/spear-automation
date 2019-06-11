@@ -5,8 +5,10 @@ namespace MOL.Models
 {
     public partial class Personnel
     {
-        public Guid MarineId { get; set; }
+        public int MarineId { get; set; }
         public DateTime DateReturning { get; set; }
-        public int Location { get; set; }
+        public Location Location { get; set; }
+        public CertificationLevel CertificationLevel {get;set;}
+
     }
 }

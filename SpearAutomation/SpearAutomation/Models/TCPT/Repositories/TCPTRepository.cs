@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SpearAutomation.Models.Logger.Data;
+using SpearAutomation.Models.Logger.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +12,9 @@ namespace SpearAutomation.Models.TCPT.Repositories
     public class TCPTRepository : ITCPTRepository
     {
         private readonly SPEARTCPTContext _context;
-        private readonly ILogger<TCPTRepository> _logger;
+        private readonly LoggerContext _logger;
 
-        public TCPTRepository(ILogger<TCPTRepository> logger, SPEARTCPTContext context)
+        public TCPTRepository(LoggerContext logger, SPEARTCPTContext context)
         {
             _logger = logger;
             _context = context;
@@ -39,7 +41,10 @@ namespace SpearAutomation.Models.TCPT.Repositories
             }
 
             _context.Resource.Add(entity);
+            _context.Database.OpenConnection();
+            _context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Resource ON");
             _context.SaveChanges();
+            _context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Resource OFF");
             return entity;
         }
 
@@ -51,10 +56,13 @@ namespace SpearAutomation.Models.TCPT.Repositories
             {
                 return Create(resource);
             }
+            _context.Database.OpenConnection();
 
             _context.Resource.Update(resource);
+            _context.Database.OpenConnection();
+            _context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Resource ON");
             _context.SaveChanges();
-
+            _context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Resource OFF");
             return resource;
         }
 
@@ -79,12 +87,15 @@ namespace SpearAutomation.Models.TCPT.Repositories
                     {
                         createdVehicles.Add(resource);
                     }
+                    _context.Database.OpenConnection();
                     _context.Resource.Add(resource);
+                    _context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Resource ON");
                     _context.SaveChanges();
+                    _context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Resource OFF");
                 }
                 else
                 {
-                    if (!(entity.Available.Equals(resource.Available) && entity.Location.Equals(resource.Location) && entity.Type.Equals(resource.Type)))
+                    if (!(entity.Available.Equals(resource.Available) && entity.Location.Equals(resource.Location) && entity.Type.Equals(resource.Type) && entity.CertificationLevel.Equals(resource.CertificationLevel) && entity.VehicleType.Equals(resource.VehicleType)))
                     {
                         if (resource.Type == Enums.ResourceType.Personnel)
                         {
@@ -97,8 +108,13 @@ namespace SpearAutomation.Models.TCPT.Repositories
                         entity.Available = resource.Available;
                         entity.Location = resource.Location;
                         entity.Type = resource.Type;
+                        entity.CertificationLevel = resource.CertificationLevel;
+                        entity.VehicleType = resource.VehicleType;
                         _context.Resource.Update(entity);
+                        _context.Database.OpenConnection();
+                        _context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Resource ON");
                         _context.SaveChanges();
+                        _context.Database.ExecuteSqlCommand("SET IDENTITY_INSERT dbo.Resource OFF");
                     }  
                 }
 
@@ -106,19 +122,43 @@ namespace SpearAutomation.Models.TCPT.Repositories
 
             if(updatedPersonnel.Count > 0)
             {
-                _logger.LogInformation((int)LoggingEvent.UPDATE_ITEM, "Just updated " + NumberToWords(updatedPersonnel.Count) + " Marine's Information");
+                var eventLog = new EventLog();
+                eventLog.LogLevel = "Update";
+                eventLog.CreatedTime = DateTime.Now;
+                eventLog.EventId = (int)LoggingEvent.UPDATE_ITEM;
+                eventLog.Message = ("Just updated " + NumberToWords(updatedPersonnel.Count) + " Marine's Information");
+                _logger.EventLog.Add(eventLog);
+                _logger.SaveChanges();
             }
             if(updatedVehicles.Count > 0)
             {
-                _logger.LogInformation((int)LoggingEvent.UPDATE_ITEM, "Just updated " + NumberToWords(updatedVehicles.Count) + " Vehicle's Information");
+                var eventLog = new EventLog();
+                eventLog.LogLevel = "Update";
+                eventLog.CreatedTime = DateTime.Now;
+                eventLog.EventId = (int)LoggingEvent.UPDATE_ITEM;
+                eventLog.Message = ("Just updated " + NumberToWords(updatedVehicles.Count) + " Vehicle's Information");
+                _logger.EventLog.Add(eventLog);
+                _logger.SaveChanges();
             }
             if (createdVehicles.Count > 0)
             {
-                _logger.LogInformation((int)LoggingEvent.CREATE_ITEM, "Just created " + NumberToWords(createdVehicles.Count) + " Vehicle's Information");
+                var eventLog = new EventLog();
+                eventLog.CreatedTime = DateTime.Now;
+                eventLog.LogLevel = "Creation";
+                eventLog.EventId = (int)LoggingEvent.CREATE_ITEM;
+                eventLog.Message = ("Just created " + NumberToWords(createdVehicles.Count) + " Vehicle's Information");
+                _logger.EventLog.Add(eventLog);
+                _logger.SaveChanges();
             }
             if (createdPersonnel.Count > 0)
             {
-                _logger.LogInformation((int)LoggingEvent.CREATE_ITEM, "Just created " + NumberToWords(createdPersonnel.Count) + " Marine's Information");
+                var eventLog = new EventLog();
+                eventLog.CreatedTime = DateTime.Now;
+                eventLog.LogLevel = "Creation";
+                eventLog.EventId = (int)LoggingEvent.CREATE_ITEM;
+                eventLog.Message = ("Just created " + NumberToWords(createdPersonnel.Count) + " Marine's Information");
+                _logger.EventLog.Add(eventLog);
+                _logger.SaveChanges();
             }
             return resources;
         }

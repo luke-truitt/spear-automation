@@ -12,6 +12,7 @@ namespace SpearAutomation
 {
     public class Program
     {
+        [STAThread]
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build().Run();

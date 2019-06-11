@@ -25,7 +25,7 @@ namespace MOL.Controllers
         }
 
         // GET: Personnels/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -53,11 +53,10 @@ namespace MOL.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MarineId,DateReturning,Location")] Personnel personnel)
+        public async Task<IActionResult> Create([Bind("MarineId,DateReturning,Location,CertificationLevel")] Personnel personnel)
         {
             if (ModelState.IsValid)
             {
-                personnel.MarineId = Guid.NewGuid();
                 _context.Add(personnel);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -86,7 +85,7 @@ namespace MOL.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("MarineId,DateReturning,Location")] Personnel personnel)
+        public async Task<IActionResult> Edit(int id, [Bind("MarineId,DateReturning,Location,CertificationLevel")] Personnel personnel)
         {
             if (id != personnel.MarineId)
             {
@@ -117,7 +116,7 @@ namespace MOL.Controllers
         }
 
         // GET: Personnels/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -137,7 +136,7 @@ namespace MOL.Controllers
         // POST: Personnels/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var personnel = await _context.Personnel.FindAsync(id);
             _context.Personnel.Remove(personnel);
@@ -145,7 +144,7 @@ namespace MOL.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PersonnelExists(Guid id)
+        private bool PersonnelExists(int id)
         {
             return _context.Personnel.Any(e => e.MarineId == id);
         }

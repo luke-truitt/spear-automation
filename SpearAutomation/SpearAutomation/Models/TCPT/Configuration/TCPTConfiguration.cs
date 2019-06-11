@@ -19,7 +19,7 @@ namespace SpearAutomation.Models.TCPT.Configuration
 
         private static IServiceCollection ConfigureTCPTData(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<SPEARTCPTContext>(options => options.UseSqlite(@"Data Source = SpearTcpt.db"));
+            services.AddDbContext<SPEARTCPTContext>(options => options.UseSqlServer("Server=.;Database=TCPT;Trusted_Connection=True;MultipleActiveResultSets=true"));
 
             try
             {

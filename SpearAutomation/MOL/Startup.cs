@@ -33,7 +33,7 @@ namespace MOL
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            var connection = @"Server=DESKTOP-R5S6QI2;Database=SPEAR.MOL;Trusted_Connection=True;ConnectRetryCount=0";
+            var connection = @"Server=.;Database=MOL;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<SPEARMOLContext>(options => options.UseSqlServer(connection));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

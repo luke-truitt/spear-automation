@@ -9,5 +9,6 @@ namespace SpearAutomation.Models.GCSS
         public int Tam { get; set; }
         public DateTime DateAvailable { get; set; }
         public Location Location { get; set; }
+        public VehicleType VehicleType { get; set; }
     }
 }

@@ -25,7 +25,7 @@ namespace TCPT.Controllers
         }
 
         // GET: Resources/Details/5
-        public async Task<IActionResult> Details(Guid? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
@@ -53,11 +53,10 @@ namespace TCPT.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ResourceId,Type,Available,Location")] Resource resource)
+        public async Task<IActionResult> Create([Bind("ResourceId,Type,Available,Location,VehicleType,CertificationLevel")] Resource resource)
         {
             if (ModelState.IsValid)
             {
-                resource.ResourceId = Guid.NewGuid();
                 _context.Add(resource);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -66,7 +65,7 @@ namespace TCPT.Controllers
         }
 
         // GET: Resources/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -86,7 +85,7 @@ namespace TCPT.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("ResourceId,Type,Available,Location")] Resource resource)
+        public async Task<IActionResult> Edit(int id, [Bind("ResourceId,Type,Available,Location,VehicleType,CertificationLevel")] Resource resource)
         {
             if (id != resource.ResourceId)
             {
@@ -117,7 +116,7 @@ namespace TCPT.Controllers
         }
 
         // GET: Resources/Delete/5
-        public async Task<IActionResult> Delete(Guid? id)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -137,7 +136,7 @@ namespace TCPT.Controllers
         // POST: Resources/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(Guid id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var resource = await _context.Resource.FindAsync(id);
             _context.Resource.Remove(resource);
@@ -145,7 +144,7 @@ namespace TCPT.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ResourceExists(Guid id)
+        private bool ResourceExists(int id)
         {
             return _context.Resource.Any(e => e.ResourceId == id);
         }

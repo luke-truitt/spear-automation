@@ -22,7 +22,7 @@ namespace MOL.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                optionsBuilder.UseSqlServer("Server=DESKTOP-R5S6QI2;Database=SPEAR.MOL;Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server=.;Database=MOL;Trusted_Connection=True;");
             }
         }
 
@@ -31,8 +31,8 @@ namespace MOL.Models
             modelBuilder.Entity<Personnel>(entity =>
             {
                 entity.HasKey(e => e.MarineId);
-
-                entity.Property(e => e.MarineId).HasDefaultValueSql("(newid())");
+                entity.ToTable("Personnel");
+                entity.Property(e => e.MarineId).ValueGeneratedNever();
             });
         }
     }

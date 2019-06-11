@@ -16,7 +16,8 @@ namespace SpearAutomation.Models.Mappers
                 ResourceId = personnel.MarineId.GetHashCode(),
                 Location = personnel.Location,
                 Type = Enums.ResourceType.Personnel,
-                Available = personnel.DateReturning < DateTime.Now
+                Available = personnel.DateReturning < DateTime.Now,
+                CertificationLevel = personnel.CertificationLevel
             };
         }
     }

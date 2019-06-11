@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using SpearAutomation.BackgroundServices;
 using SpearAutomation.Models.GCSS;
 using SpearAutomation.Models.GCSS.Configuration;
+using SpearAutomation.Models.Logger.Configuration;
 using SpearAutomation.Models.Logger.Data;
 using SpearAutomation.Models.Logger.Model;
 using SpearAutomation.Models.MOL;
@@ -45,10 +46,7 @@ namespace SpearAutomation
             services.ConfigureGCSSServices(Configuration);
             services.ConfigureMOLServices(Configuration);
             services.ConfigureTCPTServices(Configuration);
-
-
-            LoggerContext.ConnectionString = Configuration.GetConnectionString("LoggerDatabase");
-            services.AddDbContext<LoggerContext>();
+            services.ConfigureLoggerServices(Configuration);
 
             services.AddScoped<ISpearService, SpearService>();
 
@@ -61,9 +59,6 @@ namespace SpearAutomation
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
-            loggerFactory.AddContext(LogLevel.Information, Configuration.GetConnectionString("LoggerDatabase"));
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

@@ -9,5 +9,6 @@ namespace SpearAutomation.Models.MOL
         public int MarineId { get; set; }
         public DateTime DateReturning { get; set; }
         public Location Location { get; set; }
+        public CertificationLevel CertificationLevel { get; set; }
     }
 }

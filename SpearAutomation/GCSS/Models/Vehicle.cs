@@ -5,8 +5,14 @@ namespace GCSS.Models
 {
     public partial class Vehicle
     {
-        public Guid Tam { get; set; }
+        public int Tam { get; set; }
         public DateTime DateAvailable { get; set; }
-        public int Location { get; set; }
+        public Location Location { get; set; }
+        public VehicleType VehicleType { get; set; }
+
+        public string ToCSVString()
+        {
+            return Tam + "," + DateAvailable.ToString() + "," + Location.ToString() + "," + VehicleType.ToString() + "\t";
+        }
     }
 }

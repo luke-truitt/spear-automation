@@ -33,7 +33,7 @@ namespace TCPT
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            var connection = @"Server=DESKTOP-R5S6QI2;Database=SPEAR.TCPT;Trusted_Connection=True;ConnectRetryCount=0";
+            var connection = @"Server=.;Database=TCPT;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<SPEARTCPTContext>(options => options.UseSqlServer(connection));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

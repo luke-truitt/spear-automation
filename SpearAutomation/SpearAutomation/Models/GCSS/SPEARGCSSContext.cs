@@ -21,7 +21,7 @@ namespace SpearAutomation.Models.GCSS
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlite(@"Data Source=SpearGcss.db");
+                optionsBuilder.UseSqlServer("Server=.;Database=GCSS;Trusted_Connection=True;MultipleActiveResultSets=true");
             }
         }
 

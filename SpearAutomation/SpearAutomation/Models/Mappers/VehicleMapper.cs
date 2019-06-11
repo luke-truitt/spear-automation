@@ -15,7 +15,8 @@ namespace SpearAutomation.Models.Mappers
                 ResourceId = vehicle.Tam.GetHashCode(),
                 Location = vehicle.Location,
                 Type = Enums.ResourceType.Vehicle,
-                Available = vehicle.DateAvailable < DateTime.Now
+                Available = vehicle.DateAvailable < DateTime.Now,
+                VehicleType = vehicle.VehicleType
             };
         
         }

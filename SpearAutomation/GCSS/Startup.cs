@@ -33,7 +33,7 @@ namespace GCSS
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            var connection = @"Server=DESKTOP-R5S6QI2;Database=SPEAR.GCSS;Trusted_Connection=True;ConnectRetryCount=0";
+            var connection = @"Server=.;Database=GCSS;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<SPEARGCSSContext>(options => options.UseSqlServer(connection));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

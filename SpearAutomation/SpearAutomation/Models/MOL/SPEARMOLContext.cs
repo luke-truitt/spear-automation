@@ -23,7 +23,7 @@ namespace SpearAutomation.Models.MOL
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlite(@"Data Source = SpearMol.db");
+                optionsBuilder.UseSqlServer("Server=.;Database=MOL;Trusted_Connection=True;MultipleActiveResultSets=true");
             }
         }
 

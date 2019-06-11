@@ -10,5 +10,7 @@ namespace SpearAutomation.Models.TCPT
         public ResourceType Type { get; set; }
         public bool Available { get; set; }
         public Location Location { get; set; }
+        public VehicleType? VehicleType { get; set; }
+        public CertificationLevel? CertificationLevel { get; set; }
     }
 }

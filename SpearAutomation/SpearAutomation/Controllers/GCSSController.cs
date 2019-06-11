@@ -53,7 +53,7 @@ namespace SpearAutomation.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Tam,DateAvailable,Location")] Vehicle vehicle)
+        public async Task<IActionResult> Create([Bind("Tam,DateAvailable,Location,VehicleType")] Vehicle vehicle)
         {
             if (ModelState.IsValid)
             {
@@ -96,7 +96,7 @@ namespace SpearAutomation.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Tam,DateAvailable,Location")] Vehicle vehicle)
+        public async Task<IActionResult> Edit(int id, [Bind("Tam,DateAvailable,Location,VehicleType")] Vehicle vehicle)
         {
             if (id != vehicle.Tam)
             {

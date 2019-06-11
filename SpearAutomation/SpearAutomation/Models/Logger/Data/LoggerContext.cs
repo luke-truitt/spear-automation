@@ -10,14 +10,22 @@ namespace SpearAutomation.Models.Logger.Data
     public class LoggerContext : DbContext
     {
         public virtual DbSet<EventLog> EventLog { get; set; }
-        public static string ConnectionString { get; set; }
         public static int MessageMaxLength;
 
+        public LoggerContext()
+        {
 
+        }
+        public LoggerContext(DbContextOptions<LoggerContext> options)
+            : base(options)
+        {
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-                optionsBuilder.UseSqlite(ConnectionString);
-            base.OnConfiguring(optionsBuilder);
+            if(!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlite("Data Source = SpearLogging.db");
+            }
          }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -25,6 +33,8 @@ namespace SpearAutomation.Models.Logger.Data
             modelBuilder.Entity<EventLog>(entity =>
             {
                 entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.ToTable("EventLog");
 
                 entity.Property(e => e.EventId).HasColumnName("EventID");
 

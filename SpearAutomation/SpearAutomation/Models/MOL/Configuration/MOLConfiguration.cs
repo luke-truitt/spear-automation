@@ -19,7 +19,7 @@ namespace SpearAutomation.Models.MOL.Configuration
 
         private static IServiceCollection ConfigureMOLData(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<SPEARMOLContext>(options => options.UseSqlite(@"Data Source = SpearMol.db"));
+            services.AddDbContext<SPEARMOLContext>(options => options.UseSqlServer("Server=.;Database=MOL;Trusted_Connection=True;MultipleActiveResultSets=true"));
 
             try
             {

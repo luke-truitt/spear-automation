@@ -21,7 +21,7 @@ namespace SpearAutomation.Models.TCPT
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlite(@"Data Source = SpearTcpt.db");
+                optionsBuilder.UseSqlServer("Server=.;Database=TCPT;Trusted_Connection=True;MultipleActiveResultSets=true");
             }
         }
 

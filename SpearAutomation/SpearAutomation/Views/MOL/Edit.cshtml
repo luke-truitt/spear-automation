@@ -27,6 +27,14 @@
                 <span asp-validation-for="Location" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="CertificationLevel" class="control-label"></label>
+                @Html.DropDownList("CertificationLevel",
+                   new SelectList(Enum.GetValues(typeof(SpearAutomation.Models.Enums.CertificationLevel))),
+                   Model.CertificationLevel.ToString(),
+                   new { @class = "form-control" })
+                <span asp-validation-for="CertificationLevel" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </form>

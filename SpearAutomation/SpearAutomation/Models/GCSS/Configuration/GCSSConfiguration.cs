@@ -19,7 +19,7 @@ namespace SpearAutomation.Models.GCSS.Configuration
 
         private static IServiceCollection ConfigureGCSSData(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<SPEARGCSSContext>(options => options.UseSqlite(@"Data Source = SpearGcss.db"));
+            services.AddDbContext<SPEARGCSSContext>(options => options.UseSqlServer("Server=.;Database=GCSS;Trusted_Connection=True;MultipleActiveResultSets=true"));
 
             try
             {

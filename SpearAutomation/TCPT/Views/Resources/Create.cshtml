@@ -18,11 +18,6 @@
                 <span asp-validation-for="ResourceId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Type" class="control-label"></label>
-                <input asp-for="Type" class="form-control" />
-                <span asp-validation-for="Type" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <div class="checkbox">
                     <label>
                         <input asp-for="Available" /> @Html.DisplayNameFor(model => model.Available)
@@ -30,9 +25,28 @@
                 </div>
             </div>
             <div class="form-group">
-                <label asp-for="Location" class="control-label"></label>
-                <input asp-for="Location" class="form-control" />
-                <span asp-validation-for="Location" class="text-danger"></span>
+                @Html.LabelFor(m => m.Location)
+                @Html.DropDownListFor(m => m.Location,
+                                          new SelectList(Enum.GetValues(typeof(TCPT.Models.Location))),
+                                            "Select Location")
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Type)
+                @Html.DropDownListFor(m => m.Type,
+                                          new SelectList(Enum.GetValues(typeof(TCPT.Models.ResourceType))),
+                                            "Select Resource Type")
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.VehicleType)
+                @Html.DropDownListFor(m => m.VehicleType,
+                                          new SelectList(Enum.GetValues(typeof(TCPT.Models.VehicleType))),
+                                            "Select Vehicle Type if Vehicle")
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.CertificationLevel)
+                @Html.DropDownListFor(m => m.CertificationLevel,
+                                          new SelectList(Enum.GetValues(typeof(TCPT.Models.CertificationLevel))),
+                                            "Select Certification Level if Personnel")
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
