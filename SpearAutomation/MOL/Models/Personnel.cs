@@ -10,5 +10,9 @@ namespace MOL.Models
         public Location Location { get; set; }
         public CertificationLevel CertificationLevel {get;set;}
 
+        public string ToCSVString()
+        {
+            return MarineId + "," + DateReturning.ToString() + "," + ((int)Location).ToString() + "," + ((int)CertificationLevel).ToString() + "\n";
+        }
     }
 }

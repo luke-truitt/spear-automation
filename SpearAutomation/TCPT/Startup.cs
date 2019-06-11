@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TCPT.Models;
+using TCPT.Models.Services;
 
 namespace TCPT
 {
@@ -35,7 +36,7 @@ namespace TCPT
 
             var connection = @"Server=.;Database=TCPT;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<SPEARTCPTContext>(options => options.UseSqlServer(connection));
-
+            services.AddScoped<ITCPTService, TCPTService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

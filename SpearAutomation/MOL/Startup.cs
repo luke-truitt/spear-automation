@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MOL.Models;
+using MOL.Models.Services;
 
 namespace MOL
 {
@@ -35,7 +36,7 @@ namespace MOL
 
             var connection = @"Server=.;Database=MOL;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<SPEARMOLContext>(options => options.UseSqlServer(connection));
-
+            services.AddScoped<IMOLService, MOLService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

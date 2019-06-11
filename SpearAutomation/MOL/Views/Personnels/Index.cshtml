@@ -25,23 +25,40 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateReturning)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CertificationLevel)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MarineId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MarineId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MarineId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateReturning)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CertificationLevel)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.MarineId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.MarineId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.MarineId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<form asp-controller="Personnels" asp-action="UploadFile" method="post"
+      enctype="multipart/form-data">
+
+    <input type="file" name="file" />
+    <br />
+    <button #myLink type="submit" class="btn btn-default">Upload File</button>
+</form>
+<br />
+<br />
+<form asp-action="DownloadMarineReport">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <input #myLink type="submit" value="Download Report" class="btn btn-default" />
+    </div>
+</form>

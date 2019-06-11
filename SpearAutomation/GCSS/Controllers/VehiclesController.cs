@@ -10,22 +10,23 @@ using Microsoft.AspNetCore.Http;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
+using GCSS.Models.Services;
 
 namespace GCSS.Controllers
 {
     public class VehiclesController : Controller
     {
-        private readonly SPEARGCSSContext _context;
+        private readonly IGCSSService _service;
 
-        public VehiclesController(SPEARGCSSContext context)
+        public VehiclesController(IGCSSService service)
         {
-            _context = context;
+            _service = service;
         }
 
         // GET: Vehicles
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Vehicle.ToListAsync());
+            return View(_service.Get());
         }
 
         // GET: Vehicles/Details/5
@@ -34,16 +35,16 @@ namespace GCSS.Controllers
             if (id == null)
             {
                 return NotFound();
-            }
-
-            var vehicle = await _context.Vehicle
-                .FirstOrDefaultAsync(m => m.Tam == id);
-            if (vehicle == null)
+            } else
             {
-                return NotFound();
-            }
+                var vehicle = _service.GetById(id ?? 0);
+                if (vehicle == null)
+                {
+                    return NotFound();
+                }
 
-            return View(vehicle);
+                return View(vehicle);
+            }            
         }
 
         // GET: Vehicles/Create
@@ -61,27 +62,27 @@ namespace GCSS.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(vehicle);
-                await _context.SaveChangesAsync();
+                _service.Create(vehicle);
                 return RedirectToAction(nameof(Index));
             }
             return View(vehicle);
         }
 
         // GET: Vehicles/Edit/5
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
-            }
-
-            var vehicle = await _context.Vehicle.FindAsync(id);
-            if (vehicle == null)
+            } else
             {
-                return NotFound();
+                var vehicle = _service.GetById(id ?? 0);
+                if (vehicle == null)
+                {
+                    return NotFound();
+                }
+                return View(vehicle);
             }
-            return View(vehicle);
         }
 
         // POST: Vehicles/Edit/5
@@ -100,8 +101,7 @@ namespace GCSS.Controllers
             {
                 try
                 {
-                    _context.Update(vehicle);
-                    await _context.SaveChangesAsync();
+                    _service.Update(vehicle);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -127,8 +127,7 @@ namespace GCSS.Controllers
                 return NotFound();
             }
 
-            var vehicle = await _context.Vehicle
-                .FirstOrDefaultAsync(m => m.Tam == id);
+            var vehicle = _service.GetById(id??0);
             if (vehicle == null)
             {
                 return NotFound();
@@ -142,15 +141,14 @@ namespace GCSS.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var vehicle = await _context.Vehicle.FindAsync(id);
-            _context.Vehicle.Remove(vehicle);
-            await _context.SaveChangesAsync();
+            var vehicle = _service.GetById(id);
+            _service.Delete(vehicle);
             return RedirectToAction(nameof(Index));
         }
 
         private bool VehicleExists(int id)
         {
-            return _context.Vehicle.Any(e => e.Tam == id);
+            return _service.Get().Any(x => x.Tam == id);
         }
         [HttpPost]
         public async Task<ActionResult> UploadFile(IFormFile file)
@@ -196,42 +194,38 @@ namespace GCSS.Controllers
 
             foreach (var vehicle in newData)
             {
-                var entity = _context.Vehicle.FirstOrDefault(x => x.Tam == vehicle.Tam);
+                var entity = _service.GetById(vehicle.Tam);
 
                 if (entity == null)
                 {
-                    _context.Database.OpenConnection();
-                    _context.Vehicle.Add(vehicle);
-                    _context.SaveChanges();
+                    _service.Create(vehicle);
                 }
                 else
                 {
                     entity.DateAvailable = vehicle.DateAvailable;
                     entity.Location = vehicle.Location;
                     entity.VehicleType = vehicle.VehicleType;
-                    _context.Vehicle.Update(entity);
-                    _context.Database.OpenConnection();
-                    _context.SaveChanges();
+                    _service.Update(entity);
                 }
             }
 
-            var vehicles = _context.Vehicle;
+            var vehicles = _service.Get();
             return View("Index", vehicles);
         }
 
         [STAThread]
-        public async Task<IActionResult> DownloadMPR()
+        public IActionResult DownloadMPR()
         {
-            Thread thdSyncRead = new Thread(new ThreadStart(fileSaving));
+            Thread thdSyncRead = new Thread(fileSaving);
             thdSyncRead.SetApartmentState(ApartmentState.STA);
             thdSyncRead.Start();
-            var vehicles = await _context.Vehicle.ToListAsync();
-            return View("Index", vehicles);
+
+            return View("Index", _service.Get());
         }
 
-        public async void fileSaving()
+        public void fileSaving()
         {
-            var vehicles = await _context.Vehicle.ToListAsync();
+            var vehicles = _service.Get();
 
             FileWriter writer = new FileWriter();
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();

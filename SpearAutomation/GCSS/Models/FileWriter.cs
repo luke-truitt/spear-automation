@@ -19,10 +19,10 @@ namespace GCSS.Models
 
         public string ConvertData(List<Vehicle> vehicles)
         {
-            string header = "Tam,Date Available,Location,Vehicle Type\t";
+            string header = "Tam,Date Available,Location,Vehicle Type\n";
 
             StringBuilder csvData = new StringBuilder();
-
+            csvData.Append(header);
             foreach(Vehicle vehicle in vehicles)
             {
                 csvData.Append(vehicle.ToCSVString());

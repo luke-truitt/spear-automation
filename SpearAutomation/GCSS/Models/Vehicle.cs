@@ -12,7 +12,7 @@ namespace GCSS.Models
 
         public string ToCSVString()
         {
-            return Tam + "," + DateAvailable.ToString() + "," + Location.ToString() + "," + VehicleType.ToString() + "\t";
+            return Tam + "," + DateAvailable.ToString() + "," + ((int)Location).ToString() + "," + ((int)VehicleType).ToString() + "\n";
         }
     }
 }
