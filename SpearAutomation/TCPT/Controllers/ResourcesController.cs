@@ -222,19 +222,18 @@ namespace TCPT.Controllers
         }
 
         [STAThread]
-        public IActionResult DownloadDispatchReport()
+        public async Task<IActionResult> DownloadDispatchReport()
         {
-            Thread thdSyncRead = new Thread(fileSaving);
+            var resources = await _service.GetAsync();
+            Thread thdSyncRead = new Thread(()=> {fileSaving(resources); });
             thdSyncRead.SetApartmentState(ApartmentState.STA);
             thdSyncRead.Start();
 
-            return View("Index", _service.Get());
+            return View("Index", resources);
         }
 
-        public void fileSaving()
+        public void fileSaving(List<Resource> resources)
         {
-            var vehicles = _service.Get();
-
             FileWriter writer = new FileWriter();
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
             saveFileDialog1.Filter = "CSV File|*.csv";
@@ -243,7 +242,7 @@ namespace TCPT.Controllers
 
             if (saveFileDialog1.FileName != "")
             {
-                writer.WriteData(saveFileDialog1.FileName, vehicles);
+                writer.WriteData(saveFileDialog1.FileName, resources);
             }
 
             return;

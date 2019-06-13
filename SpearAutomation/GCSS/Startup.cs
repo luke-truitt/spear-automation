@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GCSS.Models;
+using GCSS.Models.Repositories;
 using GCSS.Models.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,6 +38,7 @@ namespace GCSS
             var connection = @"Server=.;Database=GCSS;Trusted_Connection=True;ConnectRetryCount=0";
             services.AddDbContext<SPEARGCSSContext>(options => options.UseSqlServer(connection));
             services.AddScoped<IGCSSService, GCSSService>();
+            services.AddScoped<IGCSSRepository, GCSSRepository>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

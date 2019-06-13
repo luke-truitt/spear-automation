@@ -19,7 +19,7 @@ using SpearAutomation.Models.Logger.Data;
 using SpearAutomation.Models.Logger.Model;
 using SpearAutomation.Models.MOL;
 using SpearAutomation.Models.MOL.Configuration;
-using SpearAutomation.Models.Services;
+using SpearAutomation.Models.Spear.Services;
 using SpearAutomation.Models.TCPT;
 using SpearAutomation.Models.TCPT.Configuration;
 

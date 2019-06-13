@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GCSS.Models.Services
+namespace GCSS.Models.Repositories
 {
-    public interface IGCSSService
+    public interface IGCSSRepository
     {
-        List<Vehicle> Get();
-        Task<List<Vehicle>> GetAsync();
+        IQueryable<Vehicle> Get();
         Vehicle GetById(int id);
         Vehicle Create(Vehicle vehicle);
         Vehicle Update(Vehicle vehicle);

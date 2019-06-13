@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SpearAutomation.Models.Logger.Data;
 using SpearAutomation.Models.Logger.Model;
+using SpearAutomation.Models.Spear.Models;
 
 namespace SpearAutomation.Controllers
 {
@@ -22,8 +23,10 @@ namespace SpearAutomation.Controllers
         // GET: Spear
         public async Task<IActionResult> Index()
         {
+            var dashboard = new DashboardModel();
             var logs = _context.EventLog.Where(x => x.EventId == (int) (LoggingEvent.UPDATE_ITEM) || x.EventId == (int)(LoggingEvent.CREATE_ITEM)).ToList();
-            return View(logs);
+            dashboard.logs = logs;
+            return View(dashboard);
         }
 
         // GET: Spear/Details/5

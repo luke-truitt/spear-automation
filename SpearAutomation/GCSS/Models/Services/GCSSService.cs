@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using GCSS.Models.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,43 +9,41 @@ namespace GCSS.Models.Services
 {
     public class GCSSService : IGCSSService
     {
-        private readonly SPEARGCSSContext _context;
+        private readonly IGCSSRepository _repository;
 
-        public GCSSService(SPEARGCSSContext context)
+        public GCSSService(IGCSSRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         public List<Vehicle> Get()
         {
-            return _context.Vehicle.ToList();
+            return _repository.Get().ToList();
+        }
+
+        public async Task<List<Vehicle>> GetAsync()
+        {
+            return await _repository.Get().ToListAsync();
         }
 
         public Vehicle GetById(int id)
         {
-            return _context.Vehicle.FirstOrDefault(x => x.Tam == id);
+            return _repository.GetById(id);
         }
 
         public Vehicle Create(Vehicle vehicle)
         {
-            _context.Database.OpenConnection();
-            _context.Vehicle.Add(vehicle);
-            _context.SaveChanges();
-            return vehicle;
+            return _repository.Create(vehicle);
         }
 
         public Vehicle Update(Vehicle vehicle)
         {
-            _context.Database.OpenConnection();
-            _context.Vehicle.Update(vehicle);
-            _context.SaveChanges();
-            return vehicle;
+            return _repository.Update(vehicle);
         }
 
         public void Delete(Vehicle vehicle)
         {
-            _context.Vehicle.Remove(vehicle);
-            _context.SaveChanges();
+            _repository.Delete(vehicle);
         }
     }
 }

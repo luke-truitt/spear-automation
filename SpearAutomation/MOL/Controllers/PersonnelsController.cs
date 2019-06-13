@@ -215,17 +215,19 @@ namespace MOL.Controllers
         [STAThread]
         public async Task<IActionResult> DownloadMarineReport()
         {
-            Thread thdSyncRead = new Thread(fileSaving);
+            var marines = await _service.GetAsync();
+            Thread thdSyncRead = new Thread(()=> {
+                fileSaving(marines);
+                }
+            );
             thdSyncRead.SetApartmentState(ApartmentState.STA);
             thdSyncRead.Start();
 
-            return View("Index", _service.Get());
+            return View("Index", marines);
         }
 
-        public void fileSaving()
+        public void fileSaving(List<Personnel> marines)
         {
-            var marines = _service.Get();
-
             FileWriter writer = new FileWriter();
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
             saveFileDialog1.Filter = "CSV File|*.csv";

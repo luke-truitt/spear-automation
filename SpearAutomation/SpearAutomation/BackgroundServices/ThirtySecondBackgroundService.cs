@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SpearAutomation.Models.Logger.Data;
-using SpearAutomation.Models.Services;
+using SpearAutomation.Models.Spear.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;

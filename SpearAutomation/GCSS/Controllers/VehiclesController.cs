@@ -214,19 +214,21 @@ namespace GCSS.Controllers
         }
 
         [STAThread]
-        public IActionResult DownloadMPR()
+        public async Task<IActionResult> DownloadMPR()
         {
-            Thread thdSyncRead = new Thread(fileSaving);
+            var vehicles = await _service.GetAsync();
+            Thread thdSyncRead = new Thread(()=>
+            {
+                fileSaving(vehicles);
+            });
             thdSyncRead.SetApartmentState(ApartmentState.STA);
             thdSyncRead.Start();
 
-            return View("Index", _service.Get());
+            return View("Index", vehicles);
         }
 
-        public void fileSaving()
+        public void fileSaving(List<Vehicle> vehicles)
         {
-            var vehicles = _service.Get();
-
             FileWriter writer = new FileWriter();
             SaveFileDialog saveFileDialog1 = new SaveFileDialog();
             saveFileDialog1.Filter = "CSV File|*.csv";

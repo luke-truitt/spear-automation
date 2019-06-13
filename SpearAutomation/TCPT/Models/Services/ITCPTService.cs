@@ -8,6 +8,7 @@ namespace TCPT.Models.Services
     public interface ITCPTService
     {
         List<Resource> Get();
+        Task<List<Resource>> GetAsync();
         Resource GetById(int id);
         Resource Create(Resource resource);
         Resource Update(Resource resource);

@@ -19,6 +19,10 @@ namespace TCPT
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                .UseKestrel()
+            .UseContentRoot(Directory.GetCurrentDirectory())
+            .UseIISIntegration()
+            .UseStartup<Startup>()
+            .UseUrls("http://localhost:5030/");
     }
 }

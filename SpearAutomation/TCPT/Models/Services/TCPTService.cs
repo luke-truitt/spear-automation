@@ -20,6 +20,11 @@ namespace TCPT.Models.Services
             return _context.Resource.ToList();
         }
 
+        public async Task<List<Resource>> GetAsync()
+        {
+            return await _context.Resource.ToListAsync();
+        }
+
         public Resource GetById(int id)
         {
             return _context.Resource.FirstOrDefault(x => x.ResourceId == id);

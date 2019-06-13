@@ -20,6 +20,11 @@ namespace MOL.Models.Services
             return _context.Personnel.ToList();
         }
 
+        public async Task<List<Personnel>> GetAsync()
+        {
+            return await _context.Personnel.ToListAsync();
+        }
+
         public Personnel GetById(int id)
         {
             return _context.Personnel.FirstOrDefault(x => x.MarineId == id);

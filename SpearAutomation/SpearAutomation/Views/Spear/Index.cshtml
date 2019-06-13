@@ -1,11 +1,11 @@
-﻿@model IEnumerable<SpearAutomation.Models.Logger.Model.EventLog>
+﻿@model SpearAutomation.Models.Spear.Models.DashboardModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
-
+<h1 style="text-align:center">Spear Dashboard -- USMC: GCSS/MOL -> TCPT</h1>
+<!--<h2>Last Updated Data: @Model.LastUpdate.ToString()</h2>-->
 <form asp-action="ClearLog">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
@@ -16,21 +16,21 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.EventId)
+                Event Id
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LogLevel)
+                Log Level
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Message)
+                Report
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CreatedTime)
+                Date and Time
             </th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.logs)
         {
             <tr>
                 <td>

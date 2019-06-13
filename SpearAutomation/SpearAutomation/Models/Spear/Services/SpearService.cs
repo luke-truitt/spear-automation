@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SpearAutomation.Models.Services
+namespace SpearAutomation.Models.Spear.Services
 {
     public class SpearService : ISpearService
     {
@@ -17,6 +17,7 @@ namespace SpearAutomation.Models.Services
         private readonly IMOLRepository _molRepository;
         private readonly ITCPTRepository _tcptRepository;
         private readonly ILogger<SpearService> _logger;
+        public static DateTime LastRead;
 
         public SpearService(IGCSSRepository gcssRepository, IMOLRepository molRepository, ITCPTRepository tcptRepository, ILogger<SpearService> logger)
         {
@@ -24,6 +25,10 @@ namespace SpearAutomation.Models.Services
             _molRepository = molRepository;
             _tcptRepository = tcptRepository;
             _logger = logger;
+            if(LastRead == null)
+            {
+                LastRead = DateTime.Now;
+            }
         }
 
         public void Update()
@@ -32,6 +37,7 @@ namespace SpearAutomation.Models.Services
             var marines = _molRepository.Get().Select(y => y.ToResource()).ToList();
             _tcptRepository.UpdateList(vehicles);
             _tcptRepository.UpdateList(marines);
+            LastRead = DateTime.Now;
         }
     }
 }
